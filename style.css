@@ -1,0 +1,191 @@
+:root {
+  --bg: #1a1109; --panel: #2a1c0f; --panel2: #33230f; --line: #5a4325;
+  --sand: #ecdcae; --muted: #c9b98a; --ink: #fff7e0;
+  --gold: #d9a93a; --gold2: #f2cf6b; --teal: #2bb3ac; --bad: #e0715a;
+  --r: 12px;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; background: var(--bg); }
+body {
+  margin: 0; color: var(--ink); min-height: 100vh;
+  background: radial-gradient(ellipse at top, #3a2712 0, var(--bg) 60%);
+  font: 17px/1.55 Georgia, "Times New Roman", serif;
+  animation: fade .6s ease-out; /* page fades in */
+}
+/* makes the page fade in and slide up a just a little */
+@keyframes fade { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+/* a box fade in and float up */
+@keyframes rise { from { opacity: 0; transform: translateY(14px) scale(.97); } to { opacity: 1; transform: none; } }
+/* this makes the torch flame grow shrink and wobble */
+@keyframes flicker { from { transform: scale(1) rotate(-3deg); opacity: .9; } to { transform: scale(1.12, 1.22) rotate(3deg); opacity: 1; } }
+/* this makes the code numbers pop in from big to normal size */
+@keyframes stamp { from { opacity: 0; transform: scale(1.6); } to { opacity: 1; transform: scale(1); } }
+
+a { color: var(--gold2); }
+:focus-visible { outline: 3px solid var(--teal); outline-offset: 3px; }
+.skip { position: absolute; left: -999px; top: 0; background: var(--gold); color: #000; padding: .5rem 1rem; z-index: 10; }
+.skip:focus { left: 8px; top: 8px; }
+
+/* this is the header/ nav */
+.site-header {
+  display: flex; flex-wrap: wrap; gap: .75rem 1.5rem; align-items: center; justify-content: space-between;
+  padding: .9rem 1.25rem; background: #120b05; border-bottom: 2px solid var(--gold);
+}
+.brand { font-weight: bold; letter-spacing: .15em; color: var(--gold2); text-decoration: none; }
+.site-header ul { display: flex; flex-wrap: wrap; gap: .25rem; list-style: none; margin: 0; padding: 0; }
+.site-header a.nav {
+  display: block; padding: .4rem .7rem; border-radius: 8px; color: var(--sand);
+  text-decoration: none; font-size: .95rem; transition: background .2s, transform .2s;
+}
+/* this makes the menu link lift up when the mouse is on it */
+.site-header a.nav:hover { background: var(--panel2); transform: translateY(-2px); }
+.site-header a[aria-current="page"] { background: var(--gold); color: #1a1109; font-weight: bold; }
+
+/* layout */
+main { max-width: 1100px; margin: 0 auto; padding: 1.5rem 1.25rem 3rem; }
+.hero { text-align: center; padding: .5rem 0 1.25rem; }
+.pyramid { width: 84px; height: 64px; margin: 0 auto .4rem; background: linear-gradient(135deg, var(--gold2), #9a6a1a); clip-path: polygon(50% 0, 100% 100%, 0 100%); }
+.eyebrow { margin: 0; color: var(--muted); letter-spacing: .2em; text-transform: uppercase; font-size: .8rem; }
+h1 { font-size: clamp(1.8rem, 4vw, 2.6rem); margin: .2rem 0 .4rem; color: var(--gold2); }
+.lead { color: var(--muted); max-width: 62ch; margin: 0 auto; }
+/* Torch flame. The flicker animation below makes it glow and move. */
+.torch {
+  display: inline-block; width: 14px; height: 26px; margin: 0 .5rem; vertical-align: middle;
+  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+  background: radial-gradient(circle at 50% 70%, #fff3b0, #ffb020 55%, #e0501a);
+  animation: flicker 1.2s infinite alternate; /* flame flickering */
+}
+.layout { display: grid; grid-template-columns: 2fr 1fr; gap: 1.5rem; align-items: start; }
+@media (max-width: 800px) { .layout { grid-template-columns: 1fr; } }
+.panel { background: var(--panel); border: 1px solid var(--line); border-radius: var(--r); padding: 1.1rem 1.25rem; }
+.panel h2 { margin-top: 0; font-size: 1.15rem; color: var(--gold2); }
+.panel ol { padding-left: 1.2rem; margin: 0 0 1rem; }
+aside.panel { position: sticky; top: 1rem; }
+@media (max-width: 800px) { aside.panel { position: static; } }
+details { margin: .5rem 0; border: 1px solid var(--line); border-radius: 8px; padding: .4rem .8rem; background: #20150a; }
+summary { cursor: pointer; color: var(--gold2); }
+
+/* progress dots*/
+.progress { display: flex; justify-content: center; align-items: center; gap: .6rem; list-style: none; margin: .8rem 0 0; padding: 0; color: var(--muted); font-size: .9rem; }
+/* Makes a progress circle fill with gold and get bigger when a puzzle is solved */
+.dot { width: 1.9rem; height: 1.9rem; border-radius: 50%; border: 2px solid var(--gold); display: grid; place-items: center; transition: background .4s, transform .4s; }
+
+/* puzzles */
+.puzzle {
+  border: 1px solid var(--line); border-radius: var(--r); padding: 1rem 1.1rem 1.1rem; margin: 0 0 1.25rem; min-width: 0;
+  background: linear-gradient(180deg, var(--panel2), var(--panel));
+}
+.puzzle legend { padding: 0 .6rem; font-weight: bold; color: var(--gold2); }
+.riddle { margin: .2rem 0 .9rem; font-style: italic; color: var(--sand); }
+.choices { display: flex; flex-wrap: wrap; gap: .6rem; }
+.choices input, .dial input, .drawer input, .tablet input, .clue input {
+  position: absolute; opacity: 0; width: 1px; height: 1px;
+}
+.choices label, .dial label {
+  cursor: pointer; padding: .55rem .95rem; border: 2px solid var(--line); border-radius: 10px;
+  background: #1f150a; user-select: none; min-width: 2.8rem; text-align: center;
+  transition: transform .2s, border-color .2s, background .2s;
+}
+/* nakes an answer button lift up and get bigger while hovering */
+.choices label:hover, .dial label:hover { transform: translateY(-3px) scale(1.04); border-color: var(--gold); }
+.choices input:checked + label, .dial input:checked + label { background: var(--gold); color: #1a1109; border-color: var(--gold2); font-weight: bold; }
+.choices input:focus-visible + label, .dial input:focus-visible + label { outline: 3px solid var(--teal); outline-offset: 3px; }
+.dial { display: flex; flex-wrap: wrap; gap: .6rem; align-items: center; margin: 0 0 .7rem; }
+.dial > span { min-width: 7.5rem; font-weight: bold; color: var(--sand); }
+.note { color: var(--muted); font-size: .9rem; margin: .6rem 0 0; }
+
+/* result messages  */
+.msg { display: none; margin: .9rem 0 0; padding: .55rem .8rem; border-radius: 8px; font-weight: bold; }
+.msg.ok { background: #123a35; border-left: 5px solid var(--teal); color: #bff3ee; }
+.msg.no { background: #4a2118; border-left: 5px solid var(--bad); color: #ffd2c7; }
+/* Makes the success message float in after a correct answer */
+.puzzle:has(.correct:checked) .ok { display: block; animation: rise .5s ease-out; }
+.puzzle:has(.wrong:checked) .no { display: block; }
+.puzzle:has(.correct:checked) .no { display: none; }
+
+/* clue cards (hidden until the puzzle is solved) */
+.clue { display: none; margin: 0 0 1rem; padding: .9rem 1rem; border: 2px dashed var(--gold); border-radius: var(--r); background: #2c2010; }
+.clue h3 { margin: 0 0 .3rem; font-size: 1rem; color: var(--gold2); }
+.clue p { margin: 0; }
+.clue label {
+  cursor: pointer; display: inline-block; margin-top: .6rem; padding: .4rem .8rem; border: 2px solid var(--gold); border-radius: 8px;
+  transition: background .2s, transform .2s;
+}
+/* Makes the pick-up button light up gold and lift on hover. */
+.clue label:hover { background: var(--gold); color: #1a1109; transform: translateY(-2px); }
+.clue .done { display: none; }
+.clue input:checked + label { background: var(--teal); border-color: var(--teal); color: #06211f; }
+.clue input:checked + label .idle { display: none; }
+.clue input:checked + label .done { display: inline; }
+.clue input:focus-visible + label { outline: 3px solid var(--teal); outline-offset: 3px; }
+.clues-empty { color: var(--muted); font-style: italic; margin: 0 0 1rem; }
+
+/* completion banner + chamber navigation */
+/* Chamber complete box. It floats in when all puzzles are solved. */
+.complete { display: none; margin-top: 1rem; text-align: center; padding: 1rem; border: 2px solid var(--teal); border-radius: var(--r); background: #123a35; animation: rise .6s ease-out; }
+.chamber-nav { display: flex; flex-wrap: wrap; gap: .8rem; justify-content: space-between; margin-top: 1.5rem; }
+.btn {
+  display: inline-block; padding: .7rem 1.2rem; border-radius: 10px; border: 2px solid var(--gold);
+  color: var(--gold2); text-decoration: none; font-weight: bold; transition: transform .2s, background .2s, color .2s;
+}
+/* Makes the button light up and get a little bigger on hover. */
+.btn:hover { transform: translateY(-3px) scale(1.03); background: var(--gold); color: #1a1109; }
+.btn.locked { border-style: dashed; border-color: var(--line); color: var(--muted); cursor: not-allowed; }
+/* Locked buttons stay still, so they do not look clickable. */
+.btn.locked:hover { transform: none; background: none; color: var(--muted); }
+.next-open { display: none; }
+.site-footer { text-align: center; color: var(--muted); font-size: .85rem; padding: 1.5rem 1rem 2rem; border-top: 1px solid var(--line); }
+
+/* chamber-specific components */
+/* Subterranean: wall of stones */
+.wall { display: grid; grid-template-columns: repeat(3, 1fr); gap: .6rem; max-width: 420px; }
+.wall input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.wall label {
+  display: grid; place-items: center; height: 70px; cursor: pointer; font-size: 1.4rem; font-weight: bold;
+  border: 2px solid #6b5230; border-radius: 6px; background: linear-gradient(160deg, #5b4527, #35260f);
+  box-shadow: 0 5px 0 #1f150a; transition: transform .25s, box-shadow .25s, background .25s;
+}
+.wall label:hover { border-color: var(--gold); }
+/* Makes a stone sink into the wall when it is pushed. */
+.wall input:checked + label { transform: translateY(5px); box-shadow: 0 0 0 #1f150a; background: #1a1109; color: var(--gold2); }
+.wall input:focus-visible + label { outline: 3px solid var(--teal); outline-offset: 3px; }
+
+/*  flip tablets */
+.tablets { display: grid; grid-template-columns: repeat(4, 1fr); gap: .8rem; perspective: 900px; margin-bottom: 1rem; }
+@media (max-width: 600px) { .tablets { grid-template-columns: repeat(2, 1fr); } }
+/* Tablet card. It flips over smoothly when clicked. */
+.tablet .card { display: block; position: relative; height: 160px; cursor: pointer; transform-style: preserve-3d; transition: transform .7s, box-shadow .3s; border-radius: 10px; }
+.tablet .card:hover { box-shadow: 0 0 14px rgba(217, 169, 58, .6); }
+.tablet .face {
+  position: absolute; inset: 0; display: grid; place-items: center; text-align: center; padding: .6rem;
+  border-radius: 10px; border: 2px solid var(--gold); backface-visibility: hidden; -webkit-backface-visibility: hidden;
+}
+.tablet .front { background: linear-gradient(160deg, #6b5230, #3b2a15); font-size: 1.6rem; color: var(--gold2); }
+/* The back of the tablet starts turned around, so the caption shows after the flip. */
+.tablet .back { background: #efe0b4; color: #2a1c0f; transform: rotateY(180deg); font-size: .88rem; }
+/* Flips the tablet over to show the caption. */
+.tablet input:checked + .card { transform: rotateY(180deg); }
+.tablet input:focus-visible + .card { outline: 3px solid var(--teal); outline-offset: 3px; }
+
+/* Queen's: sliding drawers */
+.drawers { display: grid; gap: .5rem; margin-bottom: 1rem; }
+.drawer label {
+  display: flex; justify-content: space-between; cursor: pointer; padding: .7rem 1rem; border: 2px solid var(--line);
+  border-radius: 8px; background: #3a2a16; box-shadow: inset 0 -6px 0 #2a1c0f; transition: transform .35s, background .2s;
+}
+.drawer label:hover { background: #4a361c; }
+/* Drawer contents. They slide open and fade in when the drawer is clicked. */
+.drawer .inside { max-height: 0; opacity: 0; overflow: hidden; padding: 0 1rem; background: #1f150a; border-radius: 0 0 8px 8px; transition: max-height .4s, opacity .4s, padding .4s; }
+/* Slides the drawer out to the side after opening it. */
+.drawer input:checked + label { transform: translateX(14px); background: #4a361c; border-color: var(--gold); }
+.drawer input:checked ~ .inside { max-height: 90px; opacity: 1; padding: .5rem 1rem; }
+.drawer input:focus-visible + label { outline: 3px solid var(--teal); outline-offset: 3px; }
+.scroll { border: 2px solid #8a6a2a; border-radius: 6px; background: #efe0b4; color: #2a1c0f; padding: .5rem .8rem; margin: 0 0 .6rem; }
+.pattern { font-size: 1.8rem; letter-spacing: .5rem; text-align: center; margin: .2rem 0 1rem; color: var(--gold2); }
+.code { display: none; justify-content: center; gap: .6rem; margin-top: .6rem; }
+/* number tiles. Each one pops in using the stamp animation. */
+.code span { width: 3.2rem; height: 3.8rem; display: grid; place-items: center; font-size: 2rem; font-weight: bold; color: #1a1109; background: linear-gradient(160deg, var(--gold2), #9a6a1a); border-radius: 6px; animation: stamp .5s ease-out both; }
+/* Makes the second number appear a moment after the first. */
+.code span:nth-child(2) { animation-delay: .35s; }
+/* Makes the third number appear after the second. */
+.code span:nth-child(3) { animation-delay: .7s; }

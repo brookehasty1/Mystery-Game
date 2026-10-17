@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Subterranean Chamber | Pyramid Escape</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /*logic for this chamber*/
+
+    /* Puzzle 2: stones 2 and 4 pushed in, no wrong stone pushed */
+    #s2:has(.badst:checked) .no { display: block; }
+    #s2:has(#st2:checked):has(#st4:checked):not(:has(.badst:checked)) .ok { display: block; animation: rise .5s ease-out; }
+
+    /* Puzzle 3: Sun, Moon, Star. Wrong message once all three dials are set but not correct */
+    #s3:has([name="d1"]:checked):has([name="d2"]:checked):has([name="d3"]:checked) .no { display: block; }
+    #s3:has(#d1-sun:checked):has(#d2-moon:checked):has(#d3-star:checked) .no { display: none; }
+    #s3:has(#d1-sun:checked):has(#d2-moon:checked):has(#d3-star:checked) .ok { display: block; animation: rise .5s ease-out; }
+
+    /* Progress dots */
+    main:has(#s1 .correct:checked) .d1,
+    main:has(#st2:checked):has(#st4:checked):not(:has(.badst:checked)) .d2,
+    main:has(#d1-sun:checked):has(#d2-moon:checked):has(#d3-star:checked) .d3 { background: var(--gold); color: #1a1109; transform: scale(1.15); }
+
+    /* Clues appear when their puzzle is solved */
+    main:has(#st2:checked):has(#st4:checked):not(:has(.badst:checked)) .clue-1,
+    main:has(#d1-sun:checked):has(#d2-moon:checked):has(#d3-star:checked) .clue-2 { display: block; animation: rise .6s ease-out; }
+    main:has(#st2:checked):has(#st4:checked):not(:has(.badst:checked)) .clues-empty,
+    main:has(#d1-sun:checked):has(#d2-moon:checked):has(#d3-star:checked) .clues-empty { display: none; }
+
+    /* Next chamber unlocks only when all three puzzles are solved */
+    main:has(#s1 .correct:checked):has(#st2:checked):has(#st4:checked):not(:has(.badst:checked)):has(#d1-sun:checked):has(#d2-moon:checked):has(#d3-star:checked) .next-open { display: inline-block; }
+    main:has(#s1 .correct:checked):has(#st2:checked):has(#st4:checked):not(:has(.badst:checked)):has(#d1-sun:checked):has(#d2-moon:checked):has(#d3-star:checked) .next-locked { display: none; }
+    main:has(#s1 .correct:checked):has(#st2:checked):has(#st4:checked):not(:has(.badst:checked)):has(#d1-sun:checked):has(#d2-moon:checked):has(#d3-star:checked) .complete { display: block; }
+  </style>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to main content</a>
+
+  <header class="site-header">
+    <a class="brand" href="index.html">PYRAMID ESCAPE</a>
+    <nav aria-label="Main">
+      <ul>
+        <li><a class="nav" href="index.html">Home</a></li>
+        <li><a class="nav" href="subterranean.html" aria-current="page">Subterranean</a></li>
+        <li><a class="nav" href="kings.html">King's Chamber</a></li>
+        <li><a class="nav" href="queens.html">Queen's Chamber</a></li>
+        <li><a class="nav" href="clue_board.html">Clue Board</a></li>
+        <li><a class="nav" href="unlock.html">Unlock</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main id="main">
+    <section class="hero">
+      <div class="pyramid" aria-hidden="true"></div>
+      <p class="eyebrow">Chamber 1 of 3</p>
+      <h1><span class="torch" aria-hidden="true"></span>The Subterranean Chamber<span class="torch" aria-hidden="true"></span></h1>
+      <p class="lead">You wake in the deepest chamber, carved into the rock beneath the pyramid. The golden scarab has been stolen, and the only way out is up. Solve the three puzzles and collect two clues.</p>
+      <ol class="progress" aria-label="Chamber progress">
+        <li class="dot d1">1</li><li class="dot d2">2</li><li class="dot d3">3</li>
+        <li>puzzles solved light up</li>
+      </ol>
+    </section>
+
+    <div class="layout">
+      <div>
+        <!-- PUZZLE 1 -->
+        <fieldset class="puzzle" id="s1">
+          <legend>Puzzle 1 &middot; The Sun Door</legend>
+          <p class="riddle">&ldquo;I climb the sky each dawn and vanish each dusk, yet I am no bird. Press my symbol.&rdquo;</p>
+          <div class="choices">
+            <input class="wrong" type="radio" name="p1" id="p1-moon"><label for="p1-moon">&#9790; Moon</label>
+            <input class="correct" type="radio" name="p1" id="p1-sun"><label for="p1-sun">&#9737; Sun</label>
+            <input class="wrong" type="radio" name="p1" id="p1-star"><label for="p1-star">&#9733; Star</label>
+            <input class="wrong" type="radio" name="p1" id="p1-ankh"><label for="p1-ankh">&#9765; Ankh</label>
+          </div>
+          <p class="msg ok">The door grinds open and a loose wall appears behind it.</p>
+          <p class="msg no">Nothing happens. The door stays sealed.</p>
+        </fieldset>
+
+        <!-- PUZZLE 2 -->
+        <fieldset class="puzzle" id="s2">
+          <legend>Puzzle 2 &middot; The Loose Stones</legend>
+          <p class="riddle">&ldquo;A pyramid has four triangular faces. Push the stone with that number, then push the stone with half as many.&rdquo;</p>
+          <div class="wall">
+            <input class="badst" type="checkbox" id="st1"><label for="st1">1</label>
+            <input type="checkbox" id="st2"><label for="st2">2</label>
+            <input class="badst" type="checkbox" id="st3"><label for="st3">3</label>
+            <input type="checkbox" id="st4"><label for="st4">4</label>
+            <input class="badst" type="checkbox" id="st5"><label for="st5">5</label>
+            <input class="badst" type="checkbox" id="st6"><label for="st6">6</label>
+          </div>
+          <p class="note">Tap a stone again to pull it back out.</p>
+          <p class="msg ok">A hidden niche opens. Something is inside!</p>
+          <p class="msg no">The wall shudders. A wrong stone is pushed in.</p>
+        </fieldset>
+
+        <!-- PUZZLE 3 -->
+        <fieldset class="puzzle" id="s3">
+          <legend>Puzzle 3 &middot; The Sky Lock</legend>
+          <p class="riddle">Scratched above the lock: &ldquo;First the giver of day, then the lady of the night, last the lights that never set.&rdquo;</p>
+          <div class="dial"><span>Dial 1</span>
+            <input type="radio" name="d1" id="d1-sun"><label for="d1-sun">Sun</label>
+            <input type="radio" name="d1" id="d1-moon"><label for="d1-moon">Moon</label>
+            <input type="radio" name="d1" id="d1-star"><label for="d1-star">Star</label>
+            <input type="radio" name="d1" id="d1-scarab"><label for="d1-scarab">Scarab</label>
+          </div>
+          <div class="dial"><span>Dial 2</span>
+            <input type="radio" name="d2" id="d2-sun"><label for="d2-sun">Sun</label>
+            <input type="radio" name="d2" id="d2-moon"><label for="d2-moon">Moon</label>
+            <input type="radio" name="d2" id="d2-star"><label for="d2-star">Star</label>
+            <input type="radio" name="d2" id="d2-scarab"><label for="d2-scarab">Scarab</label>
+          </div>
+          <div class="dial"><span>Dial 3</span>
+            <input type="radio" name="d3" id="d3-sun"><label for="d3-sun">Sun</label>
+            <input type="radio" name="d3" id="d3-moon"><label for="d3-moon">Moon</label>
+            <input type="radio" name="d3" id="d3-star"><label for="d3-star">Star</label>
+            <input type="radio" name="d3" id="d3-scarab"><label for="d3-scarab">Scarab</label>
+          </div>
+          <p class="msg ok">Click! The stone lock falls away.</p>
+          <p class="msg no">The lock does not move. Re-read the riddle.</p>
+        </fieldset>
+
+        <p class="complete" role="status"><strong>Chamber complete!</strong> The stairway to the King's Chamber is open.</p>
+      </div>
+
+      <aside class="panel" aria-label="Instructions and clues">
+        <h2>How to play</h2>
+        <ol>
+          <li>Read each riddle carefully.</li>
+          <li>Click the symbols, stones, or dials to answer.</li>
+          <li>Solve a puzzle to reveal a clue, then pick it up.</li>
+          <li>Solve all three puzzles to unlock the next chamber.</li>
+        </ol>
+        <details><summary>Hint for Puzzle 1</summary><p>Which one rises and sets every day?</p></details>
+        <details><summary>Hint for Puzzle 2</summary><p>Four faces, and half of four is two.</p></details>
+        <details><summary>Hint for Puzzle 3</summary><p>Day, night, then the lights in the night sky.</p></details>
+
+        <h2>Clues found</h2>
+        <p class="clues-empty">Nothing yet. Solve puzzles to find clues.</p>
+        <div class="clue clue-1">
+          <h3>Clue 1 &middot; Torn Papyrus</h3>
+          <p>&ldquo;The thief wore a gold scarab ring.&rdquo;</p>
+          <input type="checkbox" id="pick1"><label for="pick1"><span class="idle">Pick up clue</span><span class="done">&#10003; Added to Clue Board</span></label>
+        </div>
+        <div class="clue clue-2">
+          <h3>Clue 2 &middot; Sandal Prints</h3>
+          <p>One print is dragged behind the other. The thief walks with a limp.</p>
+          <input type="checkbox" id="pick2"><label for="pick2"><span class="idle">Pick up clue</span><span class="done">&#10003; Added to Clue Board</span></label>
+        </div>
+      </aside>
+    </div>
+
+    <nav class="chamber-nav" aria-label="Chamber navigation">
+      <a class="btn" href="clue_board.html">Open Clue Board</a>
+      <span class="btn locked next-locked">&#128274; King's Chamber (solve all puzzles)</span>
+      <a class="btn next-open" href="kings.html">Go to the King's Chamber &rarr;</a>
+    </nav>
+  </main>
+
+  <footer class="site-footer">CSC 4370/6370 &middot; Project 1 &middot; Brooke Hasty &amp; Hamza Yassin</footer>
+</body>
+</html>

@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>King's Chamber | Pyramid Escape</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+
+    /* Puzzle 2: weights 3 and 6 balance the scale (9), nothing else */
+    #s2:has(.badw:checked) .no { display: block; }
+    #s2:has(#w3:checked):has(#w6:checked):not(:has(.badw:checked)) .ok { display: block; animation: rise .5s ease-out; }
+
+    /* Puzzle 3: water, then bread, then incense */
+    #s3:has([name="ow"]:checked):has([name="ob"]:checked):has([name="oi"]:checked) .no { display: block; }
+    #s3:has(#ow-1:checked):has(#ob-2:checked):has(#oi-3:checked) .no { display: none; }
+    #s3:has(#ow-1:checked):has(#ob-2:checked):has(#oi-3:checked) .ok { display: block; animation: rise .5s ease-out; }
+
+    /* Progress dots */
+    main:has(#s1 .correct:checked) .d1,
+    main:has(#w3:checked):has(#w6:checked):not(:has(.badw:checked)) .d2,
+    main:has(#ow-1:checked):has(#ob-2:checked):has(#oi-3:checked) .d3 { background: var(--gold); color: #1a1109; transform: scale(1.15); }
+
+    /* Clues: Clue 3 after Puzzle 1, Clue 4 after Puzzle 3 */
+    main:has(#s1 .correct:checked) .clue-3,
+    main:has(#ow-1:checked):has(#ob-2:checked):has(#oi-3:checked) .clue-4 { display: block; animation: rise .6s ease-out; }
+    main:has(#s1 .correct:checked) .clues-empty,
+    main:has(#ow-1:checked):has(#ob-2:checked):has(#oi-3:checked) .clues-empty { display: none; }
+
+    /* Next chamber unlocks only when all three puzzles are solved */
+    main:has(#s1 .correct:checked):has(#w3:checked):has(#w6:checked):not(:has(.badw:checked)):has(#ow-1:checked):has(#ob-2:checked):has(#oi-3:checked) .next-open { display: inline-block; }
+    main:has(#s1 .correct:checked):has(#w3:checked):has(#w6:checked):not(:has(.badw:checked)):has(#ow-1:checked):has(#ob-2:checked):has(#oi-3:checked) .next-locked { display: none; }
+    main:has(#s1 .correct:checked):has(#w3:checked):has(#w6:checked):not(:has(.badw:checked)):has(#ow-1:checked):has(#ob-2:checked):has(#oi-3:checked) .complete { display: block; }
+  </style>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to main content</a>
+
+  <header class="site-header">
+    <a class="brand" href="index.html">PYRAMID ESCAPE</a>
+    <nav aria-label="Main">
+      <ul>
+        <li><a class="nav" href="index.html">Home</a></li>
+        <li><a class="nav" href="subterranean.html">Subterranean</a></li>
+        <li><a class="nav" href="kings.html" aria-current="page">King's Chamber</a></li>
+        <li><a class="nav" href="queens.html">Queen's Chamber</a></li>
+        <li><a class="nav" href="clue_board.html">Clue Board</a></li>
+        <li><a class="nav" href="unlock.html">Unlock</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main id="main">
+    <section class="hero">
+      <div class="pyramid" aria-hidden="true"></div>
+      <p class="eyebrow">Chamber 2 of 3</p>
+      <h1><span class="torch" aria-hidden="true"></span>The King's Chamber<span class="torch" aria-hidden="true"></span></h1>
+      <p class="lead">Granite walls, a silent sarcophagus, and four carved tablets. Someone broke the royal seal here. Compare the evidence, solve three puzzles, and earn two clues.</p>
+      <ol class="progress" aria-label="Chamber progress">
+        <li class="dot d1">1</li><li class="dot d2">2</li><li class="dot d3">3</li>
+        <li>puzzles solved light up</li>
+      </ol>
+    </section>
+
+    <div class="layout">
+      <div>
+        <!-- PUZZLE 1 -->
+        <fieldset class="puzzle" id="s1">
+          <legend>Puzzle 1 &middot; The Four Tablets</legend>
+          <p class="riddle">Four tablets record the same night, but one scribe told a different story. Flip each tablet, compare the captions, then choose the odd one out.</p>
+          <div class="tablets">
+            <div class="tablet">
+              <input type="checkbox" id="t1"><label class="card" for="t1" aria-label="Flip tablet I">
+                <span class="face front">&#9765; I</span>
+                <span class="face back">Sunset. Two guards keep watch. The door is SEALED.</span>
+              </label>
+            </div>
+            <div class="tablet">
+              <input type="checkbox" id="t2"><label class="card" for="t2" aria-label="Flip tablet II">
+                <span class="face front">&#9765; II</span>
+                <span class="face back">Sunset. Two guards keep watch. The door is SEALED.</span>
+              </label>
+            </div>
+            <div class="tablet">
+              <input type="checkbox" id="t3"><label class="card" for="t3" aria-label="Flip tablet III">
+                <span class="face front">&#9765; III</span>
+                <span class="face back">Sunset. Two guards keep watch. The door is OPEN.</span>
+              </label>
+            </div>
+            <div class="tablet">
+              <input type="checkbox" id="t4"><label class="card" for="t4" aria-label="Flip tablet IV">
+                <span class="face front">&#9765; IV</span>
+                <span class="face back">Sunset. Two guards keep watch. The door is SEALED.</span>
+              </label>
+            </div>
+          </div>
+          <p class="riddle">Which tablet is different?</p>
+          <div class="choices">
+            <input class="wrong" type="radio" name="p1" id="p1-1"><label for="p1-1">Tablet I</label>
+            <input class="wrong" type="radio" name="p1" id="p1-2"><label for="p1-2">Tablet II</label>
+            <input class="correct" type="radio" name="p1" id="p1-3"><label for="p1-3">Tablet III</label>
+            <input class="wrong" type="radio" name="p1" id="p1-4"><label for="p1-4">Tablet IV</label>
+          </div>
+          <p class="msg ok">Yes! One scribe saw the door standing open.</p>
+          <p class="msg no">Those captions match. Look for the one that says something different.</p>
+        </fieldset>
+
+        <!-- PUZZLE 2 -->
+        <fieldset class="puzzle" id="s2">
+          <legend>Puzzle 2 &middot; The Scales of Maat</legend>
+          <p class="riddle">The left pan holds a weight of 9 (a 4 and a 5). Choose exactly two weights for the right pan so the scales balance.</p>
+          <div class="choices">
+            <input class="badw" type="checkbox" id="w1"><label for="w1">1</label>
+            <input type="checkbox" id="w3"><label for="w3">3</label>
+            <input class="badw" type="checkbox" id="w4"><label for="w4">4</label>
+            <input type="checkbox" id="w6"><label for="w6">6</label>
+          </div>
+          <p class="note">Tap a weight again to remove it from the pan.</p>
+          <p class="msg ok">The scales settle level and the sarcophagus lid shifts.</p>
+          <p class="msg no">The scales tip. Try a different pair.</p>
+        </fieldset>
+
+        <!-- PUZZLE 3 -->
+        <fieldset class="puzzle" id="s3">
+          <legend>Puzzle 3 &middot; The Royal Offering</legend>
+          <p class="riddle">&ldquo;Water cleanses before anything else. The bread is laid down before the incense is burned.&rdquo; Give each offering its place in the ritual.</p>
+          <div class="dial"><span>Water</span>
+            <input type="radio" name="ow" id="ow-1"><label for="ow-1">1st</label>
+            <input type="radio" name="ow" id="ow-2"><label for="ow-2">2nd</label>
+            <input type="radio" name="ow" id="ow-3"><label for="ow-3">3rd</label>
+          </div>
+          <div class="dial"><span>Bread</span>
+            <input type="radio" name="ob" id="ob-1"><label for="ob-1">1st</label>
+            <input type="radio" name="ob" id="ob-2"><label for="ob-2">2nd</label>
+            <input type="radio" name="ob" id="ob-3"><label for="ob-3">3rd</label>
+          </div>
+          <div class="dial"><span>Incense</span>
+            <input type="radio" name="oi" id="oi-1"><label for="oi-1">1st</label>
+            <input type="radio" name="oi" id="oi-2"><label for="oi-2">2nd</label>
+            <input type="radio" name="oi" id="oi-3"><label for="oi-3">3rd</label>
+          </div>
+          <p class="msg ok">The ritual is complete. A stone panel slides aside.</p>
+          <p class="msg no">The ritual is wrong. The panel stays shut.</p>
+        </fieldset>
+
+        <p class="complete" role="status"><strong>Chamber complete!</strong> The passage to the Queen's Chamber is open.</p>
+      </div>
+
+      <aside class="panel" aria-label="Instructions and clues">
+        <h2>How to play</h2>
+        <ol>
+          <li>Tap a tablet to flip it and read its caption.</li>
+          <li>Compare the captions to spot the difference.</li>
+          <li>Solve a puzzle to reveal a clue, then pick it up.</li>
+          <li>Solve all three puzzles to unlock the next chamber.</li>
+        </ol>
+        <details><summary>Hint for Puzzle 1</summary><p>Read every caption word by word. Only one word changes.</p></details>
+        <details><summary>Hint for Puzzle 2</summary><p>Two numbers that add up to nine. Not 4 and 5, because 5 is missing.</p></details>
+        <details><summary>Hint for Puzzle 3</summary><p>Water is first. Bread comes before incense.</p></details>
+
+        <h2>Clues found</h2>
+        <p class="clues-empty">Nothing yet. Solve puzzles to find clues.</p>
+        <div class="clue clue-3">
+          <h3>Clue 3 &middot; The Open Door</h3>
+          <p>The sealed door was opened at sunset.</p>
+          <input type="checkbox" id="pick3"><label for="pick3"><span class="idle">Pick up clue</span><span class="done">&#10003; Added to Clue Board</span></label>
+        </div>
+        <div class="clue clue-4">
+          <h3>Clue 4 &middot; The Broken Seal</h3>
+          <p>The royal seal was broken by someone who could read the hieroglyphs on the door.</p>
+          <input type="checkbox" id="pick4"><label for="pick4"><span class="idle">Pick up clue</span><span class="done">&#10003; Added to Clue Board</span></label>
+        </div>
+      </aside>
+    </div>
+
+    <nav class="chamber-nav" aria-label="Chamber navigation">
+      <a class="btn" href="clue_board.html">Open Clue Board</a>
+      <span class="btn locked next-locked">&#128274; Queen's Chamber (solve all puzzles)</span>
+      <a class="btn next-open" href="queens.html">Go to the Queen's Chamber &rarr;</a>
+    </nav>
+  </main>
+
+  <footer class="site-footer">CSC 4370/6370 &middot; Project 1 &middot; Brooke Hasty &amp; Hamza Yassin</footer>
+</body>
+</html>

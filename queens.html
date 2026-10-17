@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Queen's Chamber | Pyramid Escape</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /*Puzzle logic for this chamber */
+
+    /* Puzzle 2: order the papyri by date (B = 1st, C = 2nd, A = 3rd) */
+    #s2:has([name="oa"]:checked):has([name="ob"]:checked):has([name="oc"]:checked) .no { display: block; }
+    #s2:has(#oa-3:checked):has(#ob-1:checked):has(#oc-2:checked) .no { display: none; }
+    #s2:has(#oa-3:checked):has(#ob-1:checked):has(#oc-2:checked) .ok { display: block; animation: rise .5s ease-out; }
+
+    /* Progress dots */
+    main:has(#s1 .correct:checked) .d1,
+    main:has(#oa-3:checked):has(#ob-1:checked):has(#oc-2:checked) .d2,
+    main:has(#s3 .correct:checked) .d3 { background: var(--gold); color: #1a1109; transform: scale(1.15); }
+
+    /* Clue 5 after Puzzle 2, Clue 6 after Puzzle 3 */
+    main:has(#oa-3:checked):has(#ob-1:checked):has(#oc-2:checked) .clue-5,
+    main:has(#s3 .correct:checked) .clue-6 { display: block; animation: rise .6s ease-out; }
+    main:has(#oa-3:checked):has(#ob-1:checked):has(#oc-2:checked) .clues-empty,
+    main:has(#s3 .correct:checked) .clues-empty { display: none; }
+    main:has(#s3 .correct:checked) .code { display: flex; }
+
+    /* Final door unlocks only when all three puzzles are solved */
+    main:has(#s1 .correct:checked):has(#oa-3:checked):has(#ob-1:checked):has(#oc-2:checked):has(#s3 .correct:checked) .next-open { display: inline-block; }
+    main:has(#s1 .correct:checked):has(#oa-3:checked):has(#ob-1:checked):has(#oc-2:checked):has(#s3 .correct:checked) .next-locked { display: none; }
+    main:has(#s1 .correct:checked):has(#oa-3:checked):has(#ob-1:checked):has(#oc-2:checked):has(#s3 .correct:checked) .complete { display: block; }
+  </style>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to main content</a>
+
+  <header class="site-header">
+    <a class="brand" href="index.html">PYRAMID ESCAPE</a>
+    <nav aria-label="Main">
+      <ul>
+        <li><a class="nav" href="index.html">Home</a></li>
+        <li><a class="nav" href="subterranean.html">Subterranean</a></li>
+        <li><a class="nav" href="kings.html">King's Chamber</a></li>
+        <li><a class="nav" href="queens.html" aria-current="page">Queen's Chamber</a></li>
+        <li><a class="nav" href="clue_board.html">Clue Board</a></li>
+        <li><a class="nav" href="unlock.html">Unlock</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main id="main">
+    <section class="hero">
+      <div class="pyramid" aria-hidden="true"></div>
+      <p class="eyebrow">Chamber 3 of 3</p>
+      <h1><span class="torch" aria-hidden="true"></span>The Queen's Chamber<span class="torch" aria-hidden="true"></span></h1>
+      <p class="lead">The royal archive: drawers of records, scribes' papyri, and a sealed niche at the far end. This is the hardest chamber. Solve three puzzles to reveal the final door code.</p>
+      <ol class="progress" aria-label="Chamber progress">
+        <li class="dot d1">1</li><li class="dot d2">2</li><li class="dot d3">3</li>
+        <li>puzzles solved light up</li>
+      </ol>
+    </section>
+
+    <div class="layout">
+      <div>
+        <!-- PUZZLE 1 -->
+        <fieldset class="puzzle" id="s1">
+          <legend>Puzzle 1 &middot; The Scribe's Drawers</legend>
+          <p class="riddle">Open every drawer and read what is inside. Then say which drawer holds the golden key.</p>
+          <div class="drawers">
+            <div class="drawer">
+              <input type="checkbox" id="dr1"><label for="dr1"><span>Drawer 1</span><span aria-hidden="true">&#9654;</span></label>
+              <div class="inside">Only dust and a broken comb.</div>
+            </div>
+            <div class="drawer">
+              <input type="checkbox" id="dr2"><label for="dr2"><span>Drawer 2</span><span aria-hidden="true">&#9654;</span></label>
+              <div class="inside">A cracked clay bead.</div>
+            </div>
+            <div class="drawer">
+              <input type="checkbox" id="dr3"><label for="dr3"><span>Drawer 3</span><span aria-hidden="true">&#9654;</span></label>
+              <div class="inside">A golden key shaped like an ankh.</div>
+            </div>
+            <div class="drawer">
+              <input type="checkbox" id="dr4"><label for="dr4"><span>Drawer 4</span><span aria-hidden="true">&#9654;</span></label>
+              <div class="inside">A dried reed pen.</div>
+            </div>
+          </div>
+          <p class="riddle">Where is the golden key?</p>
+          <div class="choices">
+            <input class="wrong" type="radio" name="p1" id="p1-1"><label for="p1-1">Drawer 1</label>
+            <input class="wrong" type="radio" name="p1" id="p1-2"><label for="p1-2">Drawer 2</label>
+            <input class="correct" type="radio" name="p1" id="p1-3"><label for="p1-3">Drawer 3</label>
+            <input class="wrong" type="radio" name="p1" id="p1-4"><label for="p1-4">Drawer 4</label>
+          </div>
+          <p class="msg ok">You take the golden key. It fits a lock on the archive shelves.</p>
+          <p class="msg no">That drawer does not hold a key. Check the others.</p>
+        </fieldset>
+
+        <!-- PUZZLE 2 -->
+        <fieldset class="puzzle" id="s2">
+          <legend>Puzzle 2 &middot; The Scattered Papyri</legend>
+          <p class="riddle">Three scrolls were shuffled. Put them in order from the earliest date to the latest.</p>
+          <div class="scroll"><strong>Papyrus A</strong> &middot; Inundation, day 12: &ldquo;The golden scarab was gone.&rdquo;</div>
+          <div class="scroll"><strong>Papyrus B</strong> &middot; Inundation, day 3: &ldquo;A new shaft was dug beside the south wall.&rdquo;</div>
+          <div class="scroll"><strong>Papyrus C</strong> &middot; Inundation, day 9: &ldquo;Footprints were found leading to the shaft.&rdquo;</div>
+          <div class="dial"><span>Papyrus A</span>
+            <input type="radio" name="oa" id="oa-1"><label for="oa-1">1st</label>
+            <input type="radio" name="oa" id="oa-2"><label for="oa-2">2nd</label>
+            <input type="radio" name="oa" id="oa-3"><label for="oa-3">3rd</label>
+          </div>
+          <div class="dial"><span>Papyrus B</span>
+            <input type="radio" name="ob" id="ob-1"><label for="ob-1">1st</label>
+            <input type="radio" name="ob" id="ob-2"><label for="ob-2">2nd</label>
+            <input type="radio" name="ob" id="ob-3"><label for="ob-3">3rd</label>
+          </div>
+          <div class="dial"><span>Papyrus C</span>
+            <input type="radio" name="oc" id="oc-1"><label for="oc-1">1st</label>
+            <input type="radio" name="oc" id="oc-2"><label for="oc-2">2nd</label>
+            <input type="radio" name="oc" id="oc-3"><label for="oc-3">3rd</label>
+          </div>
+          <p class="msg ok">The story makes sense now, and the scrolls glow faintly.</p>
+          <p class="msg no">The timeline does not add up. Check the dates again.</p>
+        </fieldset>
+
+        <!-- PUZZLE 3 -->
+        <fieldset class="puzzle" id="s3">
+          <legend>Puzzle 3 &middot; The Cartouche Code</legend>
+          <p class="riddle">A pattern is carved above the sealed niche. Which shape completes it?</p>
+          <p class="pattern" aria-label="Triangle, circle, square, triangle, circle, then a missing shape">&#9650; &#9679; &#9632; &#9650; &#9679; ?</p>
+          <div class="choices">
+            <input class="wrong" type="radio" name="p3" id="p3-tri"><label for="p3-tri">&#9650; Triangle</label>
+            <input class="wrong" type="radio" name="p3" id="p3-cir"><label for="p3-cir">&#9679; Circle</label>
+            <input class="correct" type="radio" name="p3" id="p3-sq"><label for="p3-sq">&#9632; Square</label>
+            <input class="wrong" type="radio" name="p3" id="p3-dia"><label for="p3-dia">&#9670; Diamond</label>
+          </div>
+          <p class="msg ok">The niche opens. Numbers are carved into the stone:</p>
+          <div class="code" aria-label="Final door code: 3, 5, 7"><span>3</span><span>5</span><span>7</span></div>
+          <p class="msg no">The pattern repeats every three shapes. Try again.</p>
+        </fieldset>
+
+        <p class="complete" role="status"><strong>Chamber complete!</strong> The final door is ready. Bring your evidence and the code.</p>
+      </div>
+
+      <aside class="panel" aria-label="Instructions and clues">
+        <h2>How to play</h2>
+        <ol>
+          <li>Tap a drawer to slide it open and read what is inside.</li>
+          <li>Put the papyri in date order and finish the pattern.</li>
+          <li>Solve a puzzle to reveal a clue, then pick it up.</li>
+          <li>Solve all three puzzles to open the final door.</li>
+        </ol>
+        <details><summary>Hint for Puzzle 1</summary><p>Open all four drawers. Only one holds a key.</p></details>
+        <details><summary>Hint for Puzzle 2</summary><p>Smaller day numbers come first: 3, then 9, then 12.</p></details>
+        <details><summary>Hint for Puzzle 3</summary><p>Triangle, circle, square. Then the cycle starts again.</p></details>
+
+        <h2>Clues found</h2>
+        <p class="clues-empty">Nothing yet. Solve puzzles to find clues.</p>
+        <div class="clue clue-5">
+          <h3>Clue 5 &middot; The Timeline</h3>
+          <p>Someone dug the shaft first, left footprints, and took the scarab days later.</p>
+          <input type="checkbox" id="pick5"><label for="pick5"><span class="idle">Pick up clue</span><span class="done">&#10003; Added to Clue Board</span></label>
+        </div>
+        <div class="clue clue-6">
+          <h3>Clue 6 &middot; Final Door Code</h3>
+          <p>The code is <strong>3 &middot; 5 &middot; 7</strong>.</p>
+          <input type="checkbox" id="pick6"><label for="pick6"><span class="idle">Pick up clue</span><span class="done">&#10003; Added to Clue Board</span></label>
+        </div>
+      </aside>
+    </div>
+
+    <nav class="chamber-nav" aria-label="Chamber navigation">
+      <a class="btn" href="clue_board.html">Open Clue Board</a>
+      <span class="btn locked next-locked">&#128274; Final Door (solve all puzzles)</span>
+      <a class="btn next-open" href="unlock.html">Go to the Final Door &rarr;</a>
+    </nav>
+  </main>
+
+  <footer class="site-footer">CSC 4370/6370 &middot; Project 1 &middot; Brooke Hasty &amp; Hamza Yassin</footer>
+</body>
+</html>
