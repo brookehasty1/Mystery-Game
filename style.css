@@ -20,6 +20,8 @@ body {
 @keyframes flicker { from { transform: scale(1) rotate(-3deg); opacity: .9; } to { transform: scale(1.12, 1.22) rotate(3deg); opacity: 1; } }
 /* this makes the code numbers pop in from big to normal size */
 @keyframes stamp { from { opacity: 0; transform: scale(1.6); } to { opacity: 1; transform: scale(1); } }
+/* this makes the treasure glow */
+@keyframes treasureGlow { from { filter: brightness(1.1) sepia(0.2); box-shadow: 0 0 20px gold; } to { filter: brightness(1.3) sepia(0.4); box-shadow: 0 0 60px gold; } }
 
 a { color: var(--gold2); }
 :focus-visible { outline: 3px solid var(--teal); outline-offset: 3px; }
@@ -189,3 +191,108 @@ summary { cursor: pointer; color: var(--gold2); }
 .code span:nth-child(2) { animation-delay: .35s; }
 /* Makes the third number appear after the second. */
 .code span:nth-child(3) { animation-delay: .7s; }
+
+/* Suspect cards. */
+.suspect-card { background-color: #f3e3bd; border: 2px solid #987343; border-radius: 6px; overflow: hidden; margin-bottom: 20px; }
+.suspect-card:hover { box-shadow: 0 0 14px rgba(217, 169, 58, .6); transform: translateY(5px); transition: 0.3s ease; }
+/* Hides the checkbox */
+.scroll-toggle { position: absolute; opacity: 0; pointer-events: none; }
+/* Scroll heading and instructions */
+.scroll-heading { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 18px; cursor: pointer; background-color: #d8bd82; color: #53391e; }
+.scroll-heading h3 { margin: 0; }
+/* Hides/Reveals correct instruction */
+.close-text {display: none;  }
+.scroll-toggle:checked + .scroll-heading .open-text { display: none; }
+.scroll-toggle:checked + .scroll-heading .close-text { display: inline; color: #53391e; }
+/* Close scroll */
+.suspect-details { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.7s ease; }
+/* Unroll scroll */
+.scroll-toggle:checked ~ .suspect-details { grid-template-rows: 1fr; }
+.scroll-content { overflow: hidden; min-height: 0; padding: 0 18px; background-color: #d8bd82; transform-origin: top; transform: scaleY(0.8); opacity: 0; transition: opacity 0.5s ease, transform 0.7s ease, padding 0.7s ease; text-align: center; }
+.scroll-toggle:checked ~ .suspect-details .scroll-content { transform: scaleY(1); opacity: 1; padding: 18px; }
+.scroll-content p { margin: 8px 0; color: #53391e; }
+/* Door escape mechanic */
+.door-scene { margin: 60px auto 30px; position: relative; width: min(350px, 85vw); height: 400px; perspective: 1000px; }
+/* The image behind the door */
+.treasure-room { position: absolute; inset: 0; overflow: hidden;}
+.treasure-room img { width: 100%; height: 100%; object-fit: cover; filter: brightness(1.3) sepia(0.3); animation: treasureGlow 1.5s ease-in-out infinite alternate; }
+/* The opened door */
+.door { position: absolute; inset: 0; background: url("images/door.jpg") center / cover no-repeat; border: 5px solid #8b6b3e; transform-origin: left center; transition: transform 1.5s ease; }
+
+
+/* CLUE BOARD */
+.clue-board { width: 100%; min-height: 100vh; box-sizing: border-box; background-image: url("images/scroll.png"); background-repeat: no-repeat; background-position: center top; background-size: 100% 100%; padding: 70px 15% 100px; }
+/* Extra info */
+.additional { max-width: 1100px; margin: 40px auto 40px; text-align: center; color: #3b2a17; font-style: italic; }
+/* Keep the heading and cards inside the scroll */
+.clue-board .hero { max-width: 1100px; margin: 0 auto 40px; text-align: center;}
+.clue-grid { border: none; outline: none; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px;}
+@media (max-width: 900px) { .clueGrid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 600px) { .clueGrid { grid-template-columns: 1fr; } }
+/* Individual clue card */
+.clue-card { min-width: 0; perspective: 1000px; }
+.clue-card:hover { box-shadow: 0 0 14px rgba(217, 169, 58, .6); transform: translateY(-3px); transition: 0.3s ease; }
+/* Hidden checkbox controls the flip */
+.flip-toggle { position: absolute; opacity: 0; width: 1px; height: 1px; }
+/* Rotation */
+.flip-card { position: relative; height: 320px; transform-style: preserve-3d; transition: transform 0.6s ease; }
+/* Flip when the checkbox is selected */
+.flip-toggle:checked + .flip-card { transform: rotateY(180deg); }
+/* Both sides */
+.flip-front, .flip-back { position: absolute; inset: 0; padding: 20px; box-sizing: border-box; border: 2px solid #8c7549; border-radius: 12px; background: #d8bd82; color: #3b2a17; backface-visibility: hidden; -webkit-backface-visibility: hidden; display: grid; grid-template-rows: auto 1fr auto; justify-items: center; align-items: start; text-align: center; gap: 12px;}
+.flip-front h2, .flip-back h2 { margin: 0; }
+.flip-front p, .flip-back p { margin: 0;}
+/* Button */
+.flip-button { align-self: end; justify-self: center; display: inline-block; min-width: 140px; box-sizing: border-box; padding: 10px 14px; border-radius: 6px; background: #70512e; color: white; text-align: center; cursor: pointer; }
+/* Front image */
+.flip-front img { display: block; width: 100%; height: 140px; object-fit: cover; border-radius: 8px; }
+/* Back starts rotated away */
+.flip-back { transform: rotateY(180deg); background: #e5d09c; }
+.flip-button:hover { background: #ad9059; }
+/* Hide fieldsview */
+.visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+.clue-btn { display: flex; justify-content: center; margin: 30px auto; }
+@media (max-width: 900px) { .clue-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; } }
+@media (max-width: 600px) { .clue-board { padding: 40px 5% 60px; } .clue-grid { grid-template-columns: 1fr; } .flip-card { height: 320px; } .flip-front img { height: 110px; } }
+
+
+/* HOME PAGE */
+.home-page .site-header { position: relative; z-index: 10; display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 18px 5%; border-bottom: 3px solid #b58a42; }
+/* First main home section */
+.home-hero { min-height: 490px; display: flex; align-items: center; justify-content: center; padding: 70px 8%; box-sizing: border-box; text-align: center; color: #fff5dc; background: linear-gradient(180deg, var(--panel2), var(--panel)); border: 1px solid var(--line); }
+.hero-content { max-width: 760px; background: linear-gradient(180deg, var(--panel2), var(--panel)); }
+.home-hero h1 { margin: 10px 0 20px; font-size: clamp(2.7rem, 6vw, 5rem); line-height: 1.1; color: #f3dfad; }
+.hero-description { max-width: 650px; margin: 0 auto 30px; font-size: 1.1rem; }
+/* Start Button */
+.start-button { display: inline-block; padding: 14px 26px; border: 2px solid #e8c783; border-radius: 5px; background: #79542e; color: white; text-decoration: none; font-weight: bold; transition: background 0.2s ease; }
+.start-button:hover { background: #a4773e; }
+.start-button:focus-visible, .home-page a:focus-visible { outline: 3px solid #d7a947; outline-offset: 4px; }
+.hero-hint { margin-top: 18px; font-size: 0.9rem; color: #e9d9b6; }
+/* Section headings */
+.goals-section, .rooms-section { padding: 65px 7%; }
+.rooms-section h2 { margin: 0; text-align: center; font-size: clamp(1.8rem, 3vw, 2.5rem); color: #715a40; }
+.goals-section h2, .home-ending h2 { margin: 0; text-align: center; font-size: clamp(1.8rem, 3vw, 2.5rem); }
+.section-intro { margin: 10px 0 35px; text-align: center; color: #715a40; }
+/* Three goals */
+.goals-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; max-width: 1200px; margin: 0 auto; }
+.goal-card { padding: 26px; border: 1px solid #c7ab76; border-radius: 8px; background: linear-gradient(160deg, #6b5230, #3b2a15); text-align: center;}
+.goal-number { color: #9b7135; font-size: 1rem; font-weight: bold; letter-spacing: 2px; }
+.goal-card h3 { margin: 8px 0; font-size: 1.4rem; }
+.goal-card p { margin-bottom: 0; }
+/* Four rooms */
+.rooms-section { background: #ead9b5; }
+.rooms-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px; max-width: 1200px; margin: 0 auto; }
+.room-card { overflow: hidden; border: 1px solid #b69a68; border-radius: 8px; background: #fff5dc; box-shadow: 0 4px 12px rgba(57, 39, 25, 0.12); }
+.room-card img { display: block; width: 100%; height: 230px; object-fit: cover; }
+.room-info { padding: 22px; }
+.room-number { margin: 0; color: #91672f; font-size: 0.8rem; font-weight: bold; letter-spacing: 2px; }
+.room-info h3 { color: #704923; margin: 8px 0; font-size: 1.5rem; }
+.room-info p:not(.room-number) { color: #91672f; margin-bottom: 18px; }
+.room-info a { color: #704923; font-weight: bold; text-decoration-thickness: 1px; text-underline-offset: 4px; }
+.room-info a:hover { color: #a4773e; }
+/* Closing */
+.home-ending { padding: 65px 7%; background: linear-gradient(180deg, var(--panel2), var(--panel)); color: #fff5dc; text-align: center; border: 1px solid var(--line); }
+.home-ending p { margin: 12px 0 25px; }
+@media (max-width: 900px) { .home-page .site-header { flex-direction: column; } .home-page .site-header nav ul { justify-content: center; } .goals-grid { grid-template-columns: 1fr; } }
+@media (max-width: 600px) { .home-page .site-header nav ul { gap: 12px; } .home-page .nav { font-size: 0.85rem; } .home-hero { min-height: 420px; padding: 55px 6%; } .goals-section, .rooms-section { padding: 45px 6%; } .rooms-grid { grid-template-columns: 1fr; } .room-card img { height: 190px; } }
+@media (prefers-reduced-motion: reduce) { .start-button { transition: none; } }

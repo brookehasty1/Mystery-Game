@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Clue Board Page | Pyramid Escape</title>
+        <link rel="stylesheet" href="style.css">
+    </head>
+
+    <body>
+        <header class="site-header">
+            <a class="brand" href="index.html">PYRAMID ESCAPE</a>
+            <nav aria-label="Main">
+              <ul>
+                <li><a class="nav" href="index.html">Home</a></li>
+                <li><a class="nav" href="subterranean.html">Subterranean</a></li>
+                <li><a class="nav" href="kings.html">King's Chamber</a></li>
+                <li><a class="nav" href="queens.html">Queen's Chamber</a></li>
+                <li><a class="nav" href="clue_board.html" aria-current="page">Clue Board</a></li>
+                <li><a class="nav" href="unlock.html">Unlock</a></li>
+              </ul>
+            </nav>
+          </header>
+
+          <main id="main">
+            <section class="hero">
+              <p class="eyebrow">Evidence Board</p>
+              <h1><span class="torch" aria-hidden="true"></span>The Clue Board<span class="torch" aria-hidden="true"></span></h1>
+              <p class="lead">
+                Examine the evidence collected throughout the pyramid.
+                Select a card to uncover its secrets and determine who
+                stole the royal scarab.
+              </p>
+            </section>
+
+            <div class="clue-board">
+              <p class="additional">
+                For a better user experience, only inspect clue after selecting for that clue to be added to the clue board.
+              </p>
+              <div>
+
+                <fieldset class="clue-grid">
+
+                  <legend class="visually-hidden">Evidence cards</legend>
+              
+                  <!-- Clue 1 -->
+                  <article class="clue-card">
+                      <input type="checkbox" id="clue1" class="flip-toggle">
+              
+                      <div class="flip-card">
+                          <div class="flip-front">
+                              <h2>Torn Papyrus</h2>
+                              <p>A piece of ancient writing was found near the tomb.</p>
+                              <label for="clue1" class="flip-button">Inspect Clue</label>
+                          </div>
+              
+                          <div class="flip-back">
+                              <h2>Evidence Discovered</h2>
+                              <p>The thief wore a gold scarab ring.</p>
+                              <label for="clue1" class="flip-button">Turn Back</label>
+                          </div>
+                      </div>
+                  </article>
+              
+                  <!-- Clue 2 -->
+                  <article class="clue-card">
+                      <input type="checkbox" id="clue2" class="flip-toggle">
+              
+                      <div class="flip-card">
+                          <div class="flip-front">
+                              <h2>Sandal Prints</h2>
+                              <p>Strange footprints were discovered near the pyramid.</p>
+                              <label for="clue2" class="flip-button">Inspect Clue</label>
+                          </div>
+              
+                          <div class="flip-back">
+                              <h2>Evidence Discovered</h2>
+                              <p>One print is dragged behind the other. The thief walks with a limp.</p>
+                              <label for="clue2" class="flip-button">Turn Back</label>
+                          </div>
+                      </div>
+                  </article>
+              
+                  <!-- Clue 3 -->
+                  <article class="clue-card">
+                      <input type="checkbox" id="clue3" class="flip-toggle">
+              
+                      <div class="flip-card">
+                          <div class="flip-front">
+                              <h2>The Open Door</h2>
+                              <p>The tomb was supposed to remain sealed.</p>
+                              <label for="clue3" class="flip-button">Inspect Clue</label>
+                          </div>
+              
+                          <div class="flip-back">
+                              <h2>Evidence Discovered</h2>
+                              <p>The sealed door was opened at sunset.</p>
+                              <label for="clue3" class="flip-button">Turn Back</label>
+                          </div>
+                      </div>
+                  </article>
+              
+                  <!-- Clue 4 -->
+                  <article class="clue-card">
+                      <input type="checkbox" id="clue4" class="flip-toggle">
+              
+                      <div class="flip-card">
+                          <div class="flip-front">
+                              <h2>The Broken Seal</h2>
+                              <p>Someone bypassed the royal protection on the tomb.</p>
+                              <label for="clue4" class="flip-button">Inspect Clue</label>
+                          </div>
+              
+                          <div class="flip-back">
+                              <h2>Evidence Discovered</h2>
+                              <p>The royal seal was broken by someone who could read the hieroglyphs on the door.</p>
+                              <label for="clue4" class="flip-button">Turn Back</label>
+                          </div>
+                      </div>
+                  </article>
+              
+                  <!-- Clue 5 -->
+                  <article class="clue-card">
+                      <input type="checkbox" id="clue5" class="flip-toggle">
+              
+                      <div class="flip-card">
+                          <div class="flip-front">
+                              <h2>The Timeline</h2>
+                              <p>The order of events may reveal what really happened.</p>
+                              <label for="clue5" class="flip-button">Inspect Clue</label>
+                          </div>
+              
+                          <div class="flip-back">
+                              <h2>Evidence Discovered</h2>
+                              <p>Someone dug the shaft first, left footprints, and took the scarab days later.</p>
+                              <label for="clue5" class="flip-button">Turn Back</label>
+                          </div>
+                      </div>
+                  </article>
+              
+                  <!-- Clue 6 -->
+                  <article class="clue-card">
+                      <input type="checkbox" id="clue6" class="flip-toggle">
+              
+                      <div class="flip-card">
+                          <div class="flip-front">
+                              <h2>Final Door Code</h2>
+                              <p>The last obstacle stands between you and your escape.</p>
+                              <label for="clue6" class="flip-button">Inspect Clue</label>
+                          </div>
+              
+                          <div class="flip-back">
+                              <h2>Evidence Discovered</h2>
+                              <p>The code is:</p>
+                              <p class="door-code">3 &middot; 5 &middot; 7</p>
+                              <label for="clue6" class="flip-button">Turn Back</label>
+                          </div>
+                      </div>
+                  </article>
+              
+              </fieldset>
+              </div>
+            </div>
+
+            <nav class="chamber-nav" aria-label="Chamber navigation">
+              <div class="clue-btn">
+                <a class="btn" href="unlock.html">Go to the Final Door &rarr;</a>
+              </div>
+            </nav>
+          </main>
+
+    </body>
+</html>

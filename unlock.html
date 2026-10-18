@@ -1,13 +1,279 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>Page Title</title>
-        <link rel="stylesheet" href="styles.css">
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Unlock Page | Pyramid Escape</title>
+        <link rel="stylesheet" href="style.css">
+
+        <style>
+            /* Final Room: Hide the keypad until the criminal is identified */
+            #s2 .final-keypad {
+                display: none;
+            }
+
+            #s1:has(#suspect-3:checked) ~ #s2 .final-keypad {
+                display: block;
+            }
+
+            /* Hide later code stages until the previous digit is correct */
+            #s2 .stage2,
+            #s2 .stage3,
+            #s2 .escape-reveal{
+                display: none;
+            }
+
+            /* Correct first digit: 3 */
+            #s2:has(#d1-3:checked) .stage2 {
+                display: block;
+            }
+
+            /* Correct second digit: 5 */
+            #s2:has(#d1-3:checked):has(#d2-5:checked) .stage3 {
+                display: block;
+            }
+
+            /* Correct final digit: 7 */
+            #s2:has(#d1-3:checked):has(#d2-5:checked):has(#d3-7:checked) .escape-reveal {
+                display: block;
+                animation: rise .5s ease-out;
+            }
+
+            main:has(#suspect-3:checked) .d1 {
+                background: var(--gold); color: #1a1109; transform: scale(1.15); 
+            }
+
+            /* Light up when the final digit is correct */
+            main:has(#d3-7:checked) .d2 {
+                background: var(--gold); color: #1a1109; transform: scale(1.15); 
+            }
+
+            /* Open the door when the correct code is entered */
+            main:has(#d1-3:checked)
+            :has(#d2-5:checked)
+            :has(#d3-7:checked) .door {
+            transform: rotateY(-110deg);
+}
+        </style>
     </head>
 
     <body>
     
-    
+        <header class="site-header">
+            <a class="brand" href="index.html">PYRAMID ESCAPE</a>
+            <nav aria-label="Main">
+              <ul>
+                <li><a class="nav" href="index.html">Home</a></li>
+                <li><a class="nav" href="subterranean.html">Subterranean</a></li>
+                <li><a class="nav" href="kings.html">King's Chamber</a></li>
+                <li><a class="nav" href="queens.html">Queen's Chamber</a></li>
+                <li><a class="nav" href="clue_board.html">Clue Board</a></li>
+                <li><a class="nav" href="unlock.html" aria-current="page">Unlock</a></li>
+              </ul>
+            </nav>
+          </header>
 
+          <main id="main">
+            <section class="hero">
+                <div class="pyramid" aria-hidden="true"></div>
+                <p class="eyebrow">Final Chamber</p>
+                <ol class="progress" aria-label="Chamber progress">
+                    <li class="dot d1">1</li><li class="dot d2">2</li>
+                    <li>puzzles solved light up</li>
+                  </ol>
+                <h1><span class="torch" aria-hidden="true"></span>The Tomb<span class="torch" aria-hidden="true"></span></h1>
+                <p class="lead">
+                  Examine the evidence collected throughout the pyramid.
+                  Select a card to uncover its secrets and determine who
+                  stole the royal scarab.
+                </p>
+            </section>
+
+            <div class="layout">
+                <div>
+                    <!-- PUZZLE 1 -->
+                    <fieldset class="puzzle" id="s1">
+                        <legend>Puzzle 1 &middot; Unroll the Truth </legend>
+                        <p class="riddle">&ldquo;Unroll each scroll and read about each suspect to determine who took the scarab.&rdquo;</p>
+                        <div class="suspect-list">
+
+                            <div class="suspect-card">
+                                <input type="checkbox" id="suspect1" class="scroll-toggle">
+                                <label for="suspect1" class="scroll-heading">
+                                    <h3>The Royal Scribe</h3>
+                                    <span class="open-text">Unroll Scroll ↓</span>
+                                    <span class="close-text">Roll Up ↑</span>
+                                </label>
+                                <div class="suspect-details">
+                                    <div class="scroll-content">
+                                        <p>Scarab ring: Ruby</p>
+                                        <p>Walks with a limp: No</p>
+                                        <p>Reads hieroglyphs: Yes</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="suspect-card">
+                                <input type="checkbox" id="suspect2" class="scroll-toggle">
+                                <label for="suspect2" class="scroll-heading">
+                                    <h3>The Temple Gaurd</h3>
+                                    <span class="open-text">Unroll Scroll ↓</span>
+                                    <span class="close-text">Roll Up ↑</span>
+                                </label>
+                                <div class="suspect-details">
+                                    <div class="scroll-content">
+                                        <p>Scarab ring: Copper</p>
+                                        <p>Walks with a limp: Yes</p>
+                                        <p>Reads hieroglyphs: No</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="suspect-card">
+                                <input type="checkbox" id="suspect3" class="scroll-toggle">
+                                <label for="suspect3" class="scroll-heading">
+                                    <h3>The High Priest</h3>
+                                    <span class="open-text">Unroll Scroll ↓</span>
+                                    <span class="close-text">Roll Up ↑</span>
+                                </label>
+                                <div class="suspect-details">
+                                    <div class="scroll-content">
+                                        <p>Scarab ring: Gold</p>
+                                        <p>Walks with a limp: Yes</p>
+                                        <p>Reads hieroglyphs: Yes</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="suspect-card">
+                                <input type="checkbox" id="suspect4" class="scroll-toggle">
+                                <label for="suspect4" class="scroll-heading">
+                                    <h3>The Merchant</h3>
+                                    <span class="open-text">Unroll Scroll ↓</span>
+                                    <span class="close-text">Roll Up ↑</span>
+                                </label>
+                                <div class="suspect-details">
+                                    <div class="scroll-content">
+                                        <p>Scarab ring: None</p>
+                                        <p>Walks with a limp: No</p>
+                                        <p>Reads hieroglyphs: No</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <p class="riddle">&ldquo;Who stole the scarab?&rdquo;</p>
+
+                            <div class="choices suspect-choices">
+                                <input class="wrong" type="radio" name="suspect" id="suspect-1">
+                                <label for="suspect-1">The Royal Scribe</label>
+                            
+                                <input class="wrong" type="radio" name="suspect" id="suspect-2">
+                                <label for="suspect-2">The Temple Guard</label>
+                            
+                                <input class="correct" type="radio" name="suspect" id="suspect-3">
+                                <label for="suspect-3">The High Priest</label>
+                            
+                                <input class="wrong" type="radio" name="suspect" id="suspect-4">
+                                <label for="suspect-4">The Merchant</label>
+                            </div>
+                            <p class="msg ok">A wall with numbers in stone appears. You feel the journey coming to a close.</p>
+                            <p class="msg no">That was not the theif. Interrogate another person.</p>
+                        </div>
+                    </fieldset>
+
+                    <fieldset class="puzzle" id="s2">
+                        <legend>Puzzle 2 &middot; The Final Test</legend>
+                        <p class="riddle">&ldquo;Complete the puzzle above to unveil. Input the final code one-by-one to escape.&rdquo;</p>
+                        <div class="final-puzzle">
+
+                            <div class="final-keypad">
+
+                                <!-- First digit -->
+                                <section class="code-stage stage1">
+                                    <h3>Enter the first digit</h3>
+                            
+                                    <div class="wall">
+                                        <input type="radio" name="digit1" id="d1-1"><label for="d1-1">1</label>
+                                        <input type="radio" name="digit1" id="d1-2"><label for="d1-2">2</label>
+                                        <input type="radio" name="digit1" id="d1-3"><label for="d1-3">3</label>
+                                        <input type="radio" name="digit1" id="d1-4"><label for="d1-4">4</label>
+                                        <input type="radio" name="digit1" id="d1-5"><label for="d1-5">5</label>
+                                        <input type="radio" name="digit1" id="d1-6"><label for="d1-6">6</label>
+                                        <input type="radio" name="digit1" id="d1-7"><label for="d1-7">7</label>
+                                        <input type="radio" name="digit1" id="d1-8"><label for="d1-8">8</label>
+                                        <input type="radio" name="digit1" id="d1-9"><label for="d1-9">9</label>
+                                    </div>
+                                </section>
+                            
+                                <!-- Second digit -->
+                                <section class="code-stage stage2">
+                                    <h3>Enter the second digit</h3>
+                            
+                                    <div class="wall">
+                                        <input type="radio" name="digit2" id="d2-1"><label for="d2-1">1</label>
+                                        <input type="radio" name="digit2" id="d2-2"><label for="d2-2">2</label>
+                                        <input type="radio" name="digit2" id="d2-3"><label for="d2-3">3</label>
+                                        <input type="radio" name="digit2" id="d2-4"><label for="d2-4">4</label>
+                                        <input type="radio" name="digit2" id="d2-5"><label for="d2-5">5</label>
+                                        <input type="radio" name="digit2" id="d2-6"><label for="d2-6">6</label>
+                                        <input type="radio" name="digit2" id="d2-7"><label for="d2-7">7</label>
+                                        <input type="radio" name="digit2" id="d2-8"><label for="d2-8">8</label>
+                                        <input type="radio" name="digit2" id="d2-9"><label for="d2-9">9</label>
+                                    </div>
+                                </section>
+                            
+                                <!-- Third digit -->
+                                <section class="code-stage stage3">
+                                    <h3>Enter the final digit</h3>
+                            
+                                    <div class="wall">
+                                        <input type="radio" name="digit3" id="d3-1"><label for="d3-1">1</label>
+                                        <input type="radio" name="digit3" id="d3-2"><label for="d3-2">2</label>
+                                        <input type="radio" name="digit3" id="d3-3"><label for="d3-3">3</label>
+                                        <input type="radio" name="digit3" id="d3-4"><label for="d3-4">4</label>
+                                        <input type="radio" name="digit3" id="d3-5"><label for="d3-5">5</label>
+                                        <input type="radio" name="digit3" id="d3-6"><label for="d3-6">6</label>
+                                        <input type="radio" name="digit3" id="d3-7"><label for="d3-7">7</label>
+                                        <input type="radio" name="digit3" id="d3-8"><label for="d3-8">8</label>
+                                        <input type="radio" name="digit3" id="d3-9"><label for="d3-9">9</label>
+                                    </div>
+                                </section>
+                            
+                                <div class="escape-reveal">
+                                    <h2>The Tomb Is Unlocked!</h2>
+                                    <p>You uncovered the truth, find the treasure, and escaped the pyramid!</p>
+
+                                    <div class="door-scene">
+                                        <div class="treasure-room">
+                                            <img src="images/treasure.jpg" alt="Stone door covered in hieroglyphics">
+                                        </div>
+                                    
+                                        <div class="door"></div>
+                                    </div>
+                                </div>
+                                
+
+                            
+                            </div>
+                        </div>
+                    </fieldset>
+
+
+
+                    <!-- INSTRUCTIONS AND CLUES -->
+                </div>
+                <aside class="panel" aria-label="Instructions and clues">
+                    <h2>How to play</h2>
+                    <ol>
+                      <li>Click a scroll to unroll it and read what is inside.</li>
+                      <li>Solve the first puzzle then enter the final code to escape.</li>
+                    </ol>
+                    <details><summary>Hint for Puzzle 1</summary><p>Open the scrolls for the first, second, and forth clue to find out the attributes of the thief.</p></details>
+                    <details><summary>Hint for Puzzle 2</summary><p>Completion of all three previous puzzles, will give you the final code. It's the sixth clue.</p></details>
+                </aside>
+            </div>
+          </main>
+
+          <footer class="site-footer">CSC 4370/6370 &middot; Project 1 &middot; Brooke Hasty &amp; Hamza Yassin</footer>
     </body>
 </html>

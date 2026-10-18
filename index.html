@@ -1,13 +1,191 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <title>Page Title</title>
-        <link rel="stylesheet" href="styles.css">
-    </head>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Home | Pyramid Escape</title>
+    <link rel="stylesheet" href="style.css">
+</head>
 
-    <body>
-    
-    
+<body>
+    <!-- Header and navigation -->
+    <header class="site-header">
+      <a class="brand" href="index.html">PYRAMID ESCAPE</a>
+      <nav aria-label="Main">
+        <ul>
+          <li><a class="nav" href="index.html" aria-current="page">Home</a></li>
+          <li><a class="nav" href="subterranean.html">Subterranean</a></li>
+          <li><a class="nav" href="kings.html">King's Chamber</a></li>
+          <li><a class="nav" href="queens.html">Queen's Chamber</a></li>
+          <li><a class="nav" href="clue_board.html">Clue Board</a></li>
+          <li><a class="nav" href="unlock.html">Unlock</a></li>
+        </ul>
+      </nav>
+    </header>
 
-    </body>
+    <main class="main">
+      <div class="home-page">
+        <!-- Welcome section -->
+        <section class="home-hero">
+            <div class="hero-content">
+                <p class="eyebrow">AN ANCIENT MYSTERY AWAITS</p>
+
+                <h1>The Lost Scarab</h1>
+
+                <p class="hero-description">
+                    A royal treasure has vanished within the pyramid.
+                    Explore forgotten chambers, uncover evidence,
+                    identify the thief, and find your way out before
+                    the secrets of the tomb are lost forever.
+                </p>
+
+                <a href="subterranean.html" class="start-button">
+                    Start Your Escape →
+                </a>
+
+                <p class="hero-hint">
+                    Three goals. One mystery. Can you escape?
+                </p>
+            </div>
+        </section>
+
+        <!-- Three goals -->
+        <section class="goals-section">
+            <h2>Your Mission</h2>
+
+            <p class="section-intro">
+                Follow these three steps to solve the mystery.
+            </p>
+
+            <div class="goals-grid">
+
+                <article class="goal-card">
+                    <span class="goal-number">01</span>
+                    <h3>Explore</h3>
+                    <p>
+                        Search the pyramid's chambers and uncover
+                        the secrets hidden inside.
+                    </p>
+                </article>
+
+                <article class="goal-card">
+                    <span class="goal-number">02</span>
+                    <h3>Collect Clues</h3>
+                    <p>
+                        Examine the evidence and connect the details
+                        to discover who stole the royal scarab.
+                    </p>
+                </article>
+
+                <article class="goal-card">
+                    <span class="goal-number">03</span>
+                    <h3>Escape</h3>
+                    <p>
+                        Solve the final puzzle, unlock the door,
+                        and make your escape.
+                    </p>
+                </article>
+
+            </div>
+        </section>
+
+        <!-- Four destinations -->
+        <section class="rooms-section">
+            <h2>Explore the Pyramid</h2>
+
+            <p class="section-intro">
+                Every chamber holds a piece of the mystery.
+            </p>
+
+            <div class="rooms-grid">
+
+                <article class="room-card">
+                    <img
+                        src="images/subterranean.avif"
+                        alt="An underground stone chamber"
+                    >
+
+                    <div class="room-info">
+                        <p class="room-number">CHAMBER 01</p>
+                        <h3>Subterranean Chamber</h3>
+                        <p>
+                            Descend beneath the pyramid and begin
+                            your investigation.
+                        </p>
+                        <a href="subterranean.html">Explore Chamber →</a>
+                    </div>
+                </article>
+
+                <article class="room-card">
+                    <img
+                        src="images/kings.webp"
+                        alt="A royal Egyptian chamber decorated with hieroglyphics"
+                    >
+
+                    <div class="room-info">
+                        <p class="room-number">CHAMBER 02</p>
+                        <h3>King's Chamber</h3>
+                        <p>
+                            Investigate the royal chamber for
+                            evidence of the missing treasure.
+                        </p>
+                        <a href="kings.html">Explore Chamber →</a>
+                    </div>
+                </article>
+
+                <article class="room-card">
+                    <img
+                        src="images/queens_chamber.jpeg"
+                        alt="An Egyptian chamber doorway"
+                    >
+
+                    <div class="room-info">
+                        <p class="room-number">CHAMBER 03</p>
+                        <h3>Queen's Chamber</h3>
+                        <p>
+                            Search for hidden clues and uncover
+                            the secrets of the pyramid.
+                        </p>
+                        <a href="queens.html">Explore Chamber →</a>
+                    </div>
+                </article>
+
+                <article class="room-card">
+                    <img
+                        src="images/unlock.jpg"
+                        alt="A tomb with hieroglyphics on the walls"
+                    >
+
+                    <div class="room-info">
+                        <p class="room-number">CHAMBER 04</p>
+                        <h3>Final Unlock</h3>
+                        <p>
+                            Put the evidence together and solve
+                            the puzzle that stands between you and freedom.
+                        </p>
+                        <a href="unlock.html">Face the Final Puzzle →</a>
+                    </div>
+                </article>
+
+            </div>
+        </section>
+
+        <!-- Final call to action -->
+        <section class="home-ending">
+            <h2>The Pyramid Awaits</h2>
+            <p>
+                Trust the evidence, question everything,
+                and uncover the truth.
+            </p>
+            <a href="subterranean.html" class="start-button">
+                Begin Your Adventure →
+            </a>
+        </section>
+      </div>
+    </main>
+
+    <footer class="site-footer">CSC 4370/6370 &middot; Project 1 &middot; Brooke Hasty &amp; Hamza Yassin</footer>
+
+
+</body>
 </html>
