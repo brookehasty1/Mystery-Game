@@ -192,13 +192,16 @@ summary { cursor: pointer; color: var(--gold2); }
 /* Makes the third number appear after the second. */
 .code span:nth-child(3) { animation-delay: .7s; }
 
-/* Suspect cards. */
+/* SUSPECT CARDS */
 .suspect-card { background-color: #f3e3bd; border: 2px solid #987343; border-radius: 6px; overflow: hidden; margin-bottom: 20px; }
 .suspect-card:hover { box-shadow: 0 0 14px rgba(217, 169, 58, .6); transform: translateY(5px); transition: 0.3s ease; }
 /* Hides the checkbox */
-.scroll-toggle { position: absolute; opacity: 0; pointer-events: none; }
+.scroll-toggle { position: absolute; width: 1px; height: 1px; opacity: 0; margin: 0; }
 /* Scroll heading and instructions */
 .scroll-heading { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 18px; cursor: pointer; background-color: #d8bd82; color: #53391e; }
+/* Keyboard Access */
+.scroll-toggle:focus-visible + .scroll-heading { outline: 3px solid #53391e; outline-offset: -3px; box-shadow: 0 0 12px rgba(217, 169, 58, 0.8); }
+.suspect-choices input:focus-visible + label { outline: 3px solid #53391e; outline-offset: -3px; box-shadow: 0 0 12px rgba(217, 169, 58, 0.8); }
 .scroll-heading h3 { margin: 0; }
 /* Hides/Reveals correct instruction */
 .close-text {display: none;  }
@@ -211,6 +214,11 @@ summary { cursor: pointer; color: var(--gold2); }
 .scroll-content { overflow: hidden; min-height: 0; padding: 0 18px; background-color: #d8bd82; transform-origin: top; transform: scaleY(0.8); opacity: 0; transition: opacity 0.5s ease, transform 0.7s ease, padding 0.7s ease; text-align: center; }
 .scroll-toggle:checked ~ .suspect-details .scroll-content { transform: scaleY(1); opacity: 1; padding: 18px; }
 .scroll-content p { margin: 8px 0; color: #53391e; }
+/* Keypad for final code */
+.final-keypad input:focus-visible + section {
+  outline: 3px solid #53391e;
+  outline-offset: 3px;
+}
 /* Door escape mechanic */
 .door-scene { margin: 60px auto 30px; position: relative; width: min(350px, 85vw); height: 400px; perspective: 1000px; }
 /* The image behind the door */
@@ -238,6 +246,8 @@ summary { cursor: pointer; color: var(--gold2); }
 .flip-card { position: relative; height: 320px; transform-style: preserve-3d; transition: transform 0.6s ease; }
 /* Flip when the checkbox is selected */
 .flip-toggle:checked + .flip-card { transform: rotateY(180deg); }
+/* Keyboard Access */
+.flip-toggle:focus-visible + .flip-card { outline: 3px solid #ffd700; outline-offset: 5px; }
 /* Both sides */
 .flip-front, .flip-back { position: absolute; inset: 0; padding: 20px; box-sizing: border-box; border: 2px solid #8c7549; border-radius: 12px; background: #d8bd82; color: #3b2a17; backface-visibility: hidden; -webkit-backface-visibility: hidden; display: grid; grid-template-rows: auto 1fr auto; justify-items: center; align-items: start; text-align: center; gap: 12px;}
 .flip-front h2, .flip-back h2 { margin: 0; }
