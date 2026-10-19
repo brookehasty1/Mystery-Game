@@ -271,6 +271,7 @@ summary { cursor: pointer; color: var(--gold2); }
 /* First main home section */
 .home-hero { min-height: 490px; display: flex; align-items: center; justify-content: center; padding: 70px 8%; box-sizing: border-box; text-align: center; color: #fff5dc; background: linear-gradient(180deg, var(--panel2), var(--panel)); border: 1px solid var(--line); }
 .hero-content { max-width: 760px; background: linear-gradient(180deg, var(--panel2), var(--panel)); }
+.hero-content img { align-items: center; width: 20%; height: 20%; object-fit: cover; }
 .home-hero h1 { margin: 10px 0 20px; font-size: clamp(2.7rem, 6vw, 5rem); line-height: 1.1; color: #f3dfad; }
 .hero-description { max-width: 650px; margin: 0 auto 30px; font-size: 1.1rem; }
 /* Start Button */
